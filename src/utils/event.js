@@ -104,16 +104,25 @@ define(['jxg', 'utils/type'], function (JXG, Type) {
          * @param {Object} [context] The context the handler will be called in, default is the element itself.
          * @returns Reference to the object.
          */
-        on: function (event, handler, context) {
+        on: function (event, handler, context, context2) {
             if (!Type.isArray(this.eventHandlers[event])) {
                 this.eventHandlers[event] = [];
             }
 
+
+            // KLEACH XXX added context2 as a way of specifying two
+            // contexts....?
             context = Type.def(context, this);
+
+            var thecontext = context;
+            if (context2 == true) {
+                thecontext = { orig: context,
+                               alt:  this };
+            }
 
             this.eventHandlers[event].push({
                 handler: handler,
-                context: context
+                context: thecontext
             });
 
             return this;
